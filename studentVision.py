@@ -57,7 +57,6 @@ class lanenet_detector():
         #4. Use cv2.addWeighted() to combine the results
         #5. Convert each pixel to unint8, then apply threshold to get binary image
 
-        ## TODO
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         blur = cv2.GaussianBlur(gray,(25,25), 0)
         sobelx = cv2.Sobel(blur, cv2.CV_8U, 1, 0, 17)
@@ -74,13 +73,11 @@ class lanenet_detector():
         #1. Convert the image from RGB to HSL
         #2. Apply threshold on S channel to get binary image
 
-        ## TODO
         hls = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
         white = (hls[:,:,1]>=240).astype(int)
         temp_yellow = (np.logical_and(hls[:,:,0]>=20, hls[:,:,0]<=40)).astype(int)
         yellow = np.logical_and(temp_yellow, hls[:,:,2]>=140).astype(int)
         binary_output = np.logical_or(white, yellow).astype(int)
-        ####
 
         return binary_output
 
@@ -91,13 +88,9 @@ class lanenet_detector():
         """
         #1. Apply sobel filter and color filter on input image
         #2. Combine the outputs
-        ## Here you can use as many methods as you want.
 
-        ## TODO
-        #call the above two functions and decide how to combine the output arrays
         SobelOutput = self.gradient_thresh(img)
         ColorOutput = self.color_thresh(img)
-        ####
 
         binaryImage = np.zeros_like(SobelOutput)
         binaryImage[(ColorOutput==1)|(SobelOutput==1)] = 1
@@ -116,7 +109,6 @@ class lanenet_detector():
         #2. Get M, the transform matrix, and Minv, the inverse using cv2.getPerspectiveTransform()
         #3. Generate warped image in bird view using cv2.warpPerspective()
 
-        ## TODO
         image =np.array(img, dtype = np.uint8)
         rect = np.array([[450,250],[740,250],[880,400],[120,400]], dtype="float32") #best
         maxWidth = abs(rect[3][0]-rect[2][0])
@@ -125,7 +117,6 @@ class lanenet_detector():
         M = cv2.getPerspectiveTransform(rect,dest)
         Minv = np.linalg.inv(M)
         warped_img = cv2.warpPerspective(image,M,((maxWidth).astype(int),(maxHeight).astype(int)))
-        ####
 
         return warped_img, M, Minv
 
